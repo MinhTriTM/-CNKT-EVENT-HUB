@@ -9,18 +9,21 @@ export const destinations=[
  {id:6,name:'Sân C2, giữa C1–C2',game:'Chuyền vòng',lat:10.422046,lng:105.641630},
  {id:7,name:'Sân bóng rổ, gần B4',game:'Truy tìm kho báu',lat:10.421665,lng:105.642891},
 ];
-export const finalAnswer='KET NOI DAM ME BAN LINH TIEN PHONG';
-const keys=['KHOI HANH','KET','NOI','DAM','ME','BAN','LINH','TIEN PHONG'];
-const methods=['Khởi hành','Toán học','Vật lý & Morse','Hóa học','Sinh học & nhị phân','Văn học','Tiếng Anh & Caesar','Tin học'];
+export const finalAnswer='DOI MOI SANG TAO HOA NHIP TUONG LAI CONG NGHE VI CONG DONG';
+export const finalDisplay='ĐỔI MỚI SÁNG TẠO — HÒA NHỊP TƯƠNG LAI — CÔNG NGHỆ VÌ CỘNG ĐỒNG';
+export const fragmentDisplay='Trạm 1: ĐỔI MỚI · 2: SÁNG TẠO · 3: HÒA NHỊP · 4: TƯƠNG LAI · 5: CÔNG NGHỆ · 6: VÌ · 7: CỘNG ĐỒNG.';
+export const finalContext='Thông điệp của chương trình kết nối tinh thần Nghị quyết 57-NQ/TW về phát triển khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia với vai trò đóng góp của sinh viên CN&KT cho cộng đồng. Đây là diễn giải giáo dục của chương trình, không phải khẩu hiệu hay trích dẫn chính thức của Trường, Khoa, Đảng bộ hoặc Chính phủ.';
+const keys=['KHỞI HÀNH','ĐỔI MỚI','SÁNG TẠO','HÒA NHỊP','TƯƠNG LAI','CÔNG NGHỆ','VÌ','CỘNG ĐỒNG'];
+const methods=['Khởi hành','Chính sách & định hướng','Thiết kế giải pháp','Tư duy hệ thống','Tầm nhìn','Kỹ thuật số','Phụng sự','Tác động xã hội'];
 const fragments=[
  'Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.',
- 'Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.',
- 'Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.',
- 'Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.',
- 'Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.',
- 'Đọc chữ đầu từng dòng, giữ nguyên thứ tự:\nBền lòng vượt hết chông gai.\nAi cùng chung sức, đường dài hóa gần.\nNắm tay viết tiếp mùa xuân.',
- 'Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.',
- 'Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.',
+ 'Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.',
+ 'Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.',
+ 'Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.',
+ 'Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.',
+ 'Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.',
+ 'Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.',
+ 'Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.',
 ];
 const atom=['','H','He','Li','Be','B','C','N'];const english=['','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN'];
 function routePuzzle(from:number,to:number){
@@ -34,11 +37,12 @@ function routePuzzle(from:number,to:number){
  if(from===6)return `Your next destination is station ${english[to]}. Đổi số tiếng Anh thành n và tra D0n.`;
  return `Đổi số nhị phân ${to.toString(2).padStart(3,'0')} sang thập phân n. Đi đến D0n.`;
 }
-export function card(from:number,to:number){return {id:to===0?`R${from}0`:`C${from}${to}`,from,to,method:methods[from],route:routePuzzle(from,to),fragment:fragments[from],keyword:keys[from],solution:`Địa điểm: D0${to} — ${destinations[to].name} (${destinations[to].lat.toFixed(6)}, ${destinations[to].lng.toFixed(6)}). Mảnh giữ lại: ${keys[from]}.`,hint1:'Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.',hint2:from===0?'Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.':from===1?'Các số của mảnh ghép là 11, 5, 20.':from===2?'Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.':from===3?'Be=4, H=1, Al=13.':from===4?'ATC = 001101 = 13; ACC = 000101 = 5.':from===5?'Đọc B, A, N ở đầu ba dòng.':from===6?'Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.':'Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.'};}
+const semanticHints=['Đây là lời chúc xuất phát, không mang đáp án cuối.','Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.','Tìm tên của năng lực biến ý tưởng thành giá trị mới.','Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.','Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.','Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.','Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.','Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.'];
+export function card(from:number,to:number){return {id:to===0?`R${from}0`:`C${from}${to}`,from,to,method:methods[from],route:routePuzzle(from,to),fragment:fragments[from],keyword:keys[from],solution:`Địa điểm: D0${to} — ${destinations[to].name} (${destinations[to].lat.toFixed(6)}, ${destinations[to].lng.toFixed(6)}). Mảnh giữ lại: ${keys[from]}.`,hint1:'Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.',hint2:semanticHints[from]};}
 export const bank=Array.from({length:8},(_,from)=>Array.from({length:7},(_,i)=>i+1).filter(to=>to!==from).map(to=>card(from,to))).flat();
 export const returns=Array.from({length:7},(_,i)=>card(i+1,0));
-export const decoder='A1Z26: A=1 B=2 C=3 D=4 E=5 F=6 G=7 H=8 I=9 J=10 K=11 L=12 M=13 N=14 O=15 P=16 Q=17 R=18 S=19 T=20 U=21 V=22 W=23 X=24 Y=25 Z=26. Morse: N=-. O=--- I=.. . Nguyên tố: H=1 He=2 Li=3 Be=4 B=5 C=6 N=7 Al=13. Quy ước DNA của trò chơi: A=00 C=01 G=10 T=11. Tiếng Anh: ONE=1 TWO=2 THREE=3 FOUR=4 FIVE=5 SIX=6 SEVEN=7. ASCII: E=69 G=71 H=72 I=73 N=78 O=79 P=80 T=84. Caesar: bảng A–Z quay vòng. Nhị phân: các vị trí từ phải sang trái là 1, 2, 4, 8, 16, 32, 64, 128.';
-export const bonusHints=['Đáp án là một thông điệp đồng đội được sáng tác cho chương trình, không phải địa danh.','Thông điệp gồm hai vế, mỗi vế bốn từ.','Vế đầu nói về sự gắn kết cùng niềm yêu thích.','Vế sau nói về phẩm chất và tinh thần đi đầu.','Hai từ cuối là TIÊN PHONG.','Vế đầu mở bằng KẾT NỐI; vế sau mở bằng BẢN LĨNH.','KẾT NỐI ĐAM MÊ — BẢN LĨNH TIÊN PHONG.'];
+export const decoder='Bảng này chỉ dùng cho lớp A để tìm trạm tiếp theo. Lớp B là mảnh ngữ nghĩa: đọc kỹ dữ kiện, gọi tên khái niệm phù hợp, ghi đáp án riêng của đội và giữ lại để ghép cuối. Khi ghép, ưu tiên nghĩa của cả thông điệp thay vì cố ghép theo số chữ. Những thông tin về văn bản chính sách đã được in trực tiếp trên phiếu; không cần truy cập mạng.';
+export const bonusHints=['Đáp án là thông điệp định hướng của chương trình, không phải địa danh hay khẩu hiệu chính thức.','Bảy trạm tạo thành ba vế: khát vọng tạo điều mới; cách đi cùng thời đại; giá trị dành cho mọi người.','Mảnh 1 neo vào văn bản 57-NQ/TW; mảnh 2 là năng lực biến ý tưởng thành giá trị.','Mảnh 3–4 nói về cùng nhịp và nhìn về phía trước.','Mảnh 5–7 nói về công cụ, động cơ phục vụ và đối tượng thụ hưởng.','Đặt các khái niệm theo thứ tự trạm 1 → 7, rồi thêm dấu ngắt hợp lý thành ba vế.','Đối chiếu từng khái niệm với hành động, năng lực, trạng thái, tầm nhìn, lĩnh vực, động cơ và chủ thể ở bảy phiếu.'];
 export const ideas=[
  ['Toán','Giải 3x − 2 = 13; lấy x làm trạm đến.','x=5 → đường chạy C1.'],
  ['Vật lý','Một vật chuyển động đều 2 m/s trong 3 s. Lấy quãng đường theo mét làm n.','s=6 m → sân C2.'],
