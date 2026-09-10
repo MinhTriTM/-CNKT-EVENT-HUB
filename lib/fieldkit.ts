@@ -14,7 +14,7 @@ export const finalDisplay='ĐỔI MỚI SÁNG TẠO — HÒA NHỊP TƯƠNG LAI 
 export const fragmentDisplay='Trạm 1: ĐỔI MỚI · 2: SÁNG TẠO · 3: HÒA NHỊP · 4: TƯƠNG LAI · 5: CÔNG NGHỆ · 6: VÌ · 7: CỘNG ĐỒNG.';
 export const finalContext='Thông điệp của chương trình kết nối tinh thần Nghị quyết 57-NQ/TW về phát triển khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia với vai trò đóng góp của sinh viên CN&KT cho cộng đồng. Đây là diễn giải giáo dục của chương trình, không phải khẩu hiệu hay trích dẫn chính thức của Trường, Khoa, Đảng bộ hoặc Chính phủ.';
 const keys=['KHỞI HÀNH','ĐỔI MỚI','SÁNG TẠO','HÒA NHỊP','TƯƠNG LAI','CÔNG NGHỆ','VÌ','CỘNG ĐỒNG'];
-const methods=['Khởi hành','Chính sách & định hướng','Thiết kế giải pháp','Tư duy hệ thống','Tầm nhìn','Kỹ thuật số','Phụng sự','Tác động xã hội'];
+const methods=['Vigenère + khóa thơ','Atbash + dịch vòng','Morse + đảo khối','Polybius + hoán vị tọa độ','Bacon + chữ nhị phân','Affine + kiểm tra cơ số','Lưới cột + đọc đường đi'];
 const fragments=[
  'Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.',
  'Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.',
@@ -25,20 +25,33 @@ const fragments=[
  'Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.',
  'Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.',
 ];
-const atom=['','H','He','Li','Be','B','C','N'];const english=['','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN'];
+const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const numberWords=['KHONG','MOT','HAI','BA','BON','NAM','SAU','BAY'];
+const clean=(text:string)=>text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z]/g,'');
+const caesar=(text:string,shift:number)=>clean(text).split('').map(char=>alphabet[(alphabet.indexOf(char)+shift+26)%26]).join('');
+const atbash=(text:string)=>clean(text).split('').map(char=>alphabet[25-alphabet.indexOf(char)]).join('');
+const vigenere=(text:string,key:string)=>clean(text).split('').map((char,index)=>alphabet[(alphabet.indexOf(char)+alphabet.indexOf(clean(key)[index%clean(key).length]))%26]).join('');
+const morse:{[key:string]:string}={A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..'};
+const reverse=(text:string)=>text.split('').reverse().join('');
+const polybius=(text:string)=>clean(text).replace(/J/g,'I').split('').map(char=>{const i='ABCDEFGHIKLMNOPQRSTUVWXYZ'.indexOf(char);return String(Math.floor(i/5)+1)+String(i%5+1);}).join(' ');
+const bacon=(text:string)=>clean(text).split('').map(char=>alphabet.indexOf(char).toString(2).padStart(5,'0').replace(/0/g,'S').replace(/1/g,'D')).join(' ');
+const affine=(text:string)=>clean(text).split('').map(char=>alphabet[(5*alphabet.indexOf(char)+8)%26]).join('');
+const columnEncode=(text:string)=>{const raw=clean(text);const width=4;const rows=Math.ceil(raw.length/width);const grid=Array.from({length:rows},(_,row)=>Array.from({length:width},(_,col)=>raw[row*width+col]||'X'));return [2,4,1,3].map(col=>grid.map(row=>row[col-1]).join('')).join(' ');};
+const poem=(letters:string,tail:string)=>{const verses:{[key:string]:string}={A:'Ai giữ được bình tĩnh mới nhìn ra đường đi.',C:'Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.',D:'Dưới lớp chữ bình thường thường còn một quy tắc khác.',E:'Em đừng vội tin kết quả đầu tiên vừa tìm được.',G:'Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.',H:'Hãy chia vai: người nhìn, người tính, người ghi.',I:'Im lặng quan sát, rồi mới chọn bước tiếp theo.',K:'Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.',L:'Lúc còn phân vân, hãy trở về điểm bắt đầu.',M:'Mỗi ký tự đều có lý do xuất hiện trên phiếu.',N:'Người giữ khóa không nên tự giải một mình.',O:'Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.',P:'Phía trước không xa, nhưng không dành cho người hấp tấp.',T:'Từng bước đúng quan trọng hơn một đáp án vội vàng.',U:'Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.'};return clean(letters).split('').map(letter=>verses[letter]||letter).join('\n')+`\n${tail}`;};
 function routePuzzle(from:number,to:number){
- if(to===0)return 'Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.';
- if(from===0)return `Tìm số nguyên n trong 1–7: 3n + 2 = ${3*to+2}. Đi đến D0n trong bảng địa điểm.`;
- if(from===1)return `Tìm n: 2n + 3 = ${2*to+3}. Đi đến D0n trong bảng địa điểm.`;
- if(from===2)return `Một dao động có chu kỳ T = 2 giây. Trong ${2*to} giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.`;
- if(from===3)return `Tìm số hiệu nguyên tử Z của ${atom[to]}. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.`;
- if(from===4){const bits=to.toString(2).padStart(4,'0');const code=[bits.slice(0,2),bits.slice(2)].map(b=>'ACGT'[parseInt(b,2)]).join('');return `Quy ước A=00, C=01, G=10, T=11. Đổi ${code} thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.`;}
- if(from===5)return `Đếm số từ ngăn bởi khoảng trắng trong dòng “${['BẠN','CÙNG','NHAU','BƯỚC','QUA','THỬ','THÁCH'].slice(0,to).join(' ')}”. Gọi kết quả là n, đi đến D0n.`;
- if(from===6)return `Your next destination is station ${english[to]}. Đổi số tiếng Anh thành n và tra D0n.`;
- return `Đổi số nhị phân ${to.toString(2).padStart(3,'0')} sang thập phân n. Đi đến D0n.`;
+ const target=to===0?'VE TRUNG TAM':`DEN TRAM ${numberWords[to]}`;
+ const style=(from*3+to)%7;
+ const code=`MÃ ĐÍCH sau cùng có dạng: ${to===0?'VE TRUNG TAM':'DEN TRAM <tên-số>'}. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.`;
+ if(style===0){const key='KHOA';return `MẬT THƯ 3 LỚP · VIGENÈRE\n\nOT — ${poem(key,'Lấy chữ đầu bốn dòng đầu làm khóa.')}\n\nNW — A=0…Z=25. Với khóa lặp K, giải P = C − K:\n${vigenere(target,key)}\n\nKIỂM CHỨNG — ${code}`;}
+ if(style===1){const shift=from+2;const roman=['I','II','III','IV','V','VI','VII','VIII'][shift-1];return `MẬT THƯ 3 LỚP · ATBASH + XOAY\n\nOT — ${poem('GUONG','“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: '+roman+'.')}\n\nNW — ${atbash(caesar(reverse(target),-shift))}\n\nKIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến ${roman}. ${code}`;}
+ if(style===2){const reversed=reverse(target);const blocks=clean(reversed).match(/.{1,4}/g)||[];return `MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI\n\nOT — ${poem('NGHE','Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.')}\n\nNW — ${blocks.map(block=>block.split('').map(char=>morse[char]).join('/')).join(' | ')}\n\nKIỂM CHỨNG — ${code}`;}
+ if(style===3){const encoded=polybius(reverse(target));return `MẬT THƯ 3 LỚP · Ô VUÔNG 5×5\n\nOT — ${poem('TOA DO','Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).')}\n\nNW — ${encoded}\n\nKIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. ${code}`;}
+ if(style===4){const bits=bacon(target);return `MẬT THƯ 3 LỚP · BACON\n\nOT — ${poem('NHI PHAN','Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.')}\n\nNW — ${bits}\n\nKIỂM CHỨNG — ${code}`;}
+ if(style===5){const encrypted=affine(reverse(target));return `MẬT THƯ 3 LỚP · HÀM AFFINE\n\nOT — ${poem('MODULO','Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.')}\n\nNW — ${encrypted}\n\nKIỂM CHỨNG — ${code}`;}
+ return `MẬT THƯ 3 LỚP · LƯỚI CỘT\n\nOT — ${poem('DOC COT','Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.')}\n\nNW — ${columnEncode(target)}\n\nKIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. ${code}`;
 }
 const semanticHints=['Đây là lời chúc xuất phát, không mang đáp án cuối.','Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.','Tìm tên của năng lực biến ý tưởng thành giá trị mới.','Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.','Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.','Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.','Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.','Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.'];
-export function card(from:number,to:number){return {id:to===0?`R${from}0`:`C${from}${to}`,from,to,method:methods[from],route:routePuzzle(from,to),fragment:fragments[from],keyword:keys[from],solution:`Địa điểm: D0${to} — ${destinations[to].name} (${destinations[to].lat.toFixed(6)}, ${destinations[to].lng.toFixed(6)}). Mảnh giữ lại: ${keys[from]}.`,hint1:'Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.',hint2:semanticHints[from]};}
+export function card(from:number,to:number){const style=(from*3+to)%7;return {id:to===0?`R${from}0`:`C${from}${to}`,from,to,method:methods[style],route:routePuzzle(from,to),fragment:fragments[from],keyword:keys[from],solution:`Địa điểm: D0${to} — ${destinations[to].name} (${destinations[to].lat.toFixed(6)}, ${destinations[to].lng.toFixed(6)}). Mảnh giữ lại: ${keys[from]}.`,hint1:`Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng ${methods[style]} được ghi đủ dữ kiện trên phiếu.`,hint2:semanticHints[from]};}
 export const bank=Array.from({length:8},(_,from)=>Array.from({length:7},(_,i)=>i+1).filter(to=>to!==from).map(to=>card(from,to))).flat();
 export const returns=Array.from({length:7},(_,i)=>card(i+1,0));
 export const decoder='Bảng này chỉ dùng cho lớp A để tìm trạm tiếp theo. Lớp B là mảnh ngữ nghĩa: đọc kỹ dữ kiện, gọi tên khái niệm phù hợp, ghi đáp án riêng của đội và giữ lại để ghép cuối. Khi ghép, ưu tiên nghĩa của cả thông điệp thay vì cố ghép theo số chữ. Những thông tin về văn bản chính sách đã được in trực tiếp trên phiếu; không cần truy cập mạng.';
