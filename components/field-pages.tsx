@@ -8,7 +8,7 @@ import { NativeSelect,NativeSelectOption } from '@/components/ui/native-select';
 import { DataTable,LoadState,Metric,useHub,type Row } from '@/components/hub-shared';
 import { schedule,scoreBoard,recommendedCycle,type FieldState } from '@/lib/fieldmath';
 const clock=(s:string)=>new Date(s).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'});
-const defaultState:FieldState={teams:[],cycle:recommendedCycle,start:'2026-09-13T15:10',play:6,decode:2,move:10,loser:'',attempts:[],order:[],battles:[],answers:[]};
+const defaultState:FieldState={teams:[],cycle:recommendedCycle,start:'2026-09-13T15:10',play:6,decode:5,move:10,loser:'',attempts:[],order:[],battles:[],answers:[]};
 function saveFile(name:string,value:string,type='text/plain;charset=utf-8'){const url=URL.createObjectURL(new Blob(['\uFEFF'+value],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 const csvCell=(v:unknown)=>'"'+String(v).replace(/^[=+@-]/,"'$&").replaceAll('"','""')+'"';
 function csv(name:string,rows:unknown[][]){saveFile(name,rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'text/csv;charset=utf-8');}
