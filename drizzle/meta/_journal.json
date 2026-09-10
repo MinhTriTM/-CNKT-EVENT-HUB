@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1788971704892,
+      "tag": "0000_faithful_black_tarantula",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788972320287,
+      "tag": "0001_loving_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788982636010,
+      "tag": "0002_new_zzzax",
+      "breakpoints": true
+    }
+  ]
+}

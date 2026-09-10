@@ -1,0 +1,13 @@
+"use client";
+import {useEffect,useState} from "react";
+import Link from "next/link";
+import {ArrowLeft,CalendarDays,MapPin,Printer,Copy,CheckCircle2,Ticket,Users} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {date,Empty,LoadState,type Row} from "@/components/hub-shared";
+export function TicketView({code}:{code:string}){
+ const[ticket,setTicket]=useState<Row|null>(null);const[error,setError]=useState("");const[loading,setLoading]=useState(true);const[message,setMessage]=useState("");
+ async function load(){setError("");try{const r=await fetch("/api/tickets/"+encodeURIComponent(code),{cache:"no-store"});const d=await r.json() as Row;if(!r.ok)throw new Error(d.message);setTicket(d);}catch(e){setError(e instanceof Error?e.message:"Chưa tải được vé.");}finally{setLoading(false);}}
+ useEffect(()=>{void load();},[code]);
+ async function copy(){try{await navigator.clipboard.writeText(window.location.href);setMessage("Đã sao chép đường dẫn vé.");}catch{setMessage("Không sao chép được. Bạn có thể lưu đường dẫn trên thanh địa chỉ.");}}
+ return <main className="public-main" style={{maxWidth:700}}><Link href="/su-kien" className="back-link"><ArrowLeft size={16}/>Về danh sách sự kiện</Link><LoadState loading={loading} error={error} reload={load}/>{ticket&&<article className="ticket-sheet"><header><div className="eyebrow">CNKT EVENTS · DTHU · VÉ THAM DỰ</div><h1>{ticket.eventTitle}</h1><span className={"pill "+(ticket.status==="CANCELLED"?"red":"green")}>{ticket.status==="CANCELLED"?"Vé đã hủy":ticket.checkedInAt?"Đã check-in":"Đã giữ chỗ"}</span></header><section><h2>{ticket.fullName}</h2><p className="muted">{ticket.className}</p><div className="info-grid"><div><CalendarDays/><b>{date(ticket.eventDate)}</b><span>{ticket.eventTime||"Chờ công bố"} · giờ Việt Nam</span></div><div><MapPin/><b>{ticket.venue}</b><span>Địa điểm tổ chức</span></div></div>{ticket.teamName&&<p className="meta"><Users/>Đội: {ticket.teamName}</p>}<div className="ticket-divider"/><label className="eyebrow">MÃ VÉ ĐỐI SOÁT</label><code className="ticket-code">{ticket.ticketCode}</code><p className="ticket-hint"><Ticket size={18}/>Xuất trình mã này khi check-in. Không đăng công khai mã vé hoặc đường dẫn.</p><div className="row-actions print-hide"><Button onClick={()=>window.print()}><Printer/>In / lưu PDF</Button><Button variant="outline" onClick={copy}><Copy/>Sao chép đường dẫn</Button></div>{message&&<p className="info-banner print-hide" role="status">{message}</p>}</section><footer>Vé dành cho đúng người đăng ký · Khoa Công nghệ và Kỹ thuật</footer></article>}</main>;
+}
