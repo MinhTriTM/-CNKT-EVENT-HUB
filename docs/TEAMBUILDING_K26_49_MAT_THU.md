@@ -34,7 +34,7 @@ Tọa độ do người dùng cung cấp, chưa khảo sát thực địa. Sơ �
 Vòng gốc: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 1. Vòng đề xuất theo tọa độ: **1 → 2 → 3 → 7 → 6 → 4 → 5 → 1**.
 Tính Haversine từ tọa độ đã cho: A9→4 khoảng 507 m; 3→4 khoảng 455 m. Vòng đề xuất có chặng thẳng dài nhất khoảng 330 m. Đây là khoảng cách đường chim bay, không phải chiều dài lối đi thực tế và không chứng minh không va chạm. Cần khảo sát cổng, đường đi, khu chờ và lối giao nhau.
 Giả định đi bộ 1 m/s thì 455 m đã cần khoảng 7 phút 35 giây theo đường thẳng; do đó không chốt 4 phút di chuyển chỉ từ mã Python ban đầu.
-Đề xuất: 6 phút chơi + 2 phút giải + 10 phút di chuyển/chờ = 18 phút/lượt. 7 lượt = 126 phút. Khởi đầu dự kiến 15:10, hết lượt 7 lúc 17:16; lượt cuối dùng phần di chuyển để về A9. Thay đổi cấu hình sau khi đi thử.
+Bộ mật thư ba lớp cần thời gian phối hợp. Đề xuất: 6 phút chơi + 5 phút giải + 10 phút di chuyển/chờ = 21 phút/lượt. 7 lượt = 147 phút. Khởi đầu dự kiến 15:10, hết lượt 7 lúc 17:37; lượt cuối dùng phần di chuyển để về A9. Thay đổi cấu hình sau khi đi thử.
 Hoán vị chỉ bảo đảm phân công một đội/trạm/lượt. Nếu các đội bắt đầu lệch hoặc tự chuyển sớm, bảo đảm này không còn mô tả thực tế. Dùng đồng hồ và hiệu lệnh chung, điểm chờ riêng, giới hạn chơi và quy tắc DNF.
 Đội thua tại A9 làm thử thách nhẹ 45–60 giây rồi đi trạm 4; sáu đội còn lại nhận 1, 2, 3, 5, 6, 7. Toàn bộ thời gian triển khai phải hoàn tất TRƯỚC giờ chung. Nếu đội 4 chưa đến, BTC dịch giờ chung; không cho sáu đội chơi sớm.
 Mã Python độc lập, không cần pandas: [scripts/xep-lich-k26.py](../scripts/xep-lich-k26.py).
@@ -43,13 +43,13 @@ Mã Python độc lập, không cần pandas: [scripts/xep-lich-k26.py](../scrip
 | Lượt | Giờ | Đội 1 | Đội 2 | Đội 3 | Đội 4 | Đội 5 | Đội 6 | Đội 7 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
-| 1 | 15:10–15:28 | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
-| 2 | 15:28–15:46 | T2 | T3 | T7 | T5 | T1 | T4 | T6 |
-| 3 | 15:46–16:04 | T3 | T7 | T6 | T1 | T2 | T5 | T4 |
-| 4 | 16:04–16:22 | T7 | T6 | T4 | T2 | T3 | T1 | T5 |
-| 5 | 16:22–16:40 | T6 | T4 | T5 | T3 | T7 | T2 | T1 |
-| 6 | 16:40–16:58 | T4 | T5 | T1 | T7 | T6 | T3 | T2 |
-| 7 | 16:58–17:16 | T5 | T1 | T2 | T6 | T4 | T7 | T3 |
+| 1 | 15:10–15:31 | T1 | T2 | T3 | T4 | T5 | T6 | T7 |
+| 2 | 15:31–15:52 | T2 | T3 | T7 | T5 | T1 | T4 | T6 |
+| 3 | 15:52–16:13 | T3 | T7 | T6 | T1 | T2 | T5 | T4 |
+| 4 | 16:13–16:34 | T7 | T6 | T4 | T2 | T3 | T1 | T5 |
+| 5 | 16:34–16:55 | T6 | T4 | T5 | T3 | T7 | T2 | T1 |
+| 6 | 16:55–17:16 | T4 | T5 | T1 | T7 | T6 | T3 | T2 |
+| 7 | 17:16–17:37 | T5 | T1 | T2 | T6 | T4 | T7 | T3 |
 ### Phiếu phát theo từng đội trong ví dụ
 | Đội | Xuất phát | Sáu phiếu chuyển | Phiếu về |
 | --- | --- | --- | --- |
@@ -68,486 +68,1126 @@ Bảng địa điểm D00–D07 ở mục 3 được phát cùng. Chỉ giải t
 ## 6. Toàn bộ 49 mật thư
 
 ### C01 — Trung tâm → Trạm 1
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 5. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: II.
+
+NW — INPPBKIOXY
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến II. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C02 — Trung tâm → Trạm 2
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 8. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — ../.-/..../-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C03 — Trung tâm → Trạm 3
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 11. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 11 12 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C04 — Trung tâm → Trạm 4
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 14. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SSSSD SDDDS SDDSD
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C05 — Trung tâm → Trạm 5
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 17. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — QIVQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C06 — Trung tâm → Trạm 6
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 20. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAU TSX DRA NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C07 — Trung tâm → Trạm 7
-**Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 23. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHABKF
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: KHỞI HÀNH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C12 — Trạm 1 → Trạm 2
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 7. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — WIRQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C13 — Trạm 1 → Trạm 3
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 9. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAX TBX DRA NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C14 — Trạm 1 → Trạm 4
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 11. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHABYU
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C15 — Trạm 1 → Trạm 5
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 13. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: III.
+
+NW — QCPQCLJPYZ
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến III. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C16 — Trạm 1 → Trạm 6
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 15. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — ..-/.-/.../-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C17 — Trạm 1 → Trạm 7
-**Mặt người chơi — A:** Tìm n: 2n + 3 = 17. Đi đến D0n trong bảng địa điểm.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 54 11 12 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: ĐỔI MỚI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C21 — Trạm 2 → Trạm 1
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 2 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHAMYA
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C23 — Trạm 2 → Trạm 3
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 6 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — .-/-.../--/.- | .-./-/-./. | -..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C24 — Trạm 2 → Trạm 4
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 8 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 33 34 12 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C25 — Trạm 2 → Trạm 5
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 10 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SDDSD SSSSS SDDSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C26 — Trạm 2 → Trạm 6
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 12 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — EIUQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C27 — Trạm 2 → Trạm 7
-**Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 14 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAY TBX DRA NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: SÁNG TẠO.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C31 — Trạm 3 → Trạm 1
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của H. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 44 34 32 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C32 — Trạm 3 → Trạm 2
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của He. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SSDDD SSSSS SDSSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C34 — Trạm 3 → Trạm 4
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của Be. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAN TBX DRO NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C35 — Trạm 3 → Trạm 5
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của B. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHANKT
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C36 — Trạm 3 → Trạm 6
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của C. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: V.
+
+NW — KEMSENLRAB
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến V. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C37 — Trạm 3 → Trạm 7
-**Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của N. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — -.--/.-/-.../-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: HÒA NHỊP.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C41 — Trạm 4 → Trạm 1
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AC thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAT TMX DRO NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C42 — Trạm 4 → Trạm 2
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AG thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHAHKP
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C43 — Trạm 4 → Trạm 3
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AT thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: VI.
+
+NW — FETFOMSBC
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến VI. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C45 — Trạm 4 → Trạm 5
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CC thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 32 11 33 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C46 — Trạm 4 → Trạm 6
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CG thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS DSSDS SSSSS DSDSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C47 — Trạm 4 → Trạm 7
-**Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CT thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — YINQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: TƯƠNG LAI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C51 — Trạm 5 → Trạm 1
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — -/---/--/-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C52 — Trạm 5 → Trạm 2
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 24 11 23 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C53 — Trạm 5 → Trạm 3
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SSSSD SSSSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C54 — Trạm 5 → Trạm 4
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — VANQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C56 — Trạm 5 → Trạm 6
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC QUA THỬ”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHASKB
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C57 — Trạm 5 → Trạm 7
-**Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC QUA THỬ THÁCH”. Gọi kết quả là n, đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: VII.
+
+NW — IGFUGPNTCD
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến VII. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: CÔNG NGHỆ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C61 — Trạm 6 → Trạm 1
-**Mặt người chơi — A:** Your next destination is station ONE. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — ZAQQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C62 — Trạm 6 → Trạm 2
-**Mặt người chơi — A:** Your next destination is station TWO. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAI THX DRA NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C63 — Trạm 6 → Trạm 3
-**Mặt người chơi — A:** Your next destination is station THREE. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+NLBTBHABK
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Vigenère + khóa thơ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C64 — Trạm 6 → Trạm 4
-**Mặt người chơi — A:** Your next destination is station FOUR. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: VIII.
+
+NW — UTGVHQOUDE
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến VIII. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C65 — Trạm 6 → Trạm 5
-**Mặt người chơi — A:** Your next destination is station FIVE. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — --/.-/-./-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C67 — Trạm 6 → Trạm 7
-**Mặt người chơi — A:** Your next destination is station SEVEN. Đổi số tiếng Anh thành n và tra D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SSSSD SSSSS DDSSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: VÌ.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C71 — Trạm 7 → Trạm 1
-**Mặt người chơi — A:** Đổi số nhị phân 001 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: undefined.
+
+NW — PUWWIRPVEF
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến undefined. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Atbash + dịch vòng được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C72 — Trạm 7 → Trạm 2
-**Mặt người chơi — A:** Đổi số nhị phân 010 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — ../.-/..../-- | .-/.-./-/-. | ./-..
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Morse + đảo khối được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C73 — Trạm 7 → Trạm 3
-**Mặt người chơi — A:** Đổi số nhị phân 011 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 11 12 32 11 42 44 33 15 14
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Polybius + hoán vị tọa độ được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C74 — Trạm 7 → Trạm 4
-**Mặt người chơi — A:** Đổi số nhị phân 100 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — SSSDD SSDSS SDDSD DSSDD DSSSD SSSSS SDDSS SSSSD SDDDS SDDSD
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Bacon + chữ nhị phân được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C75 — Trạm 7 → Trạm 5
-**Mặt người chơi — A:** Đổi số nhị phân 101 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — QIVQIPZVCX
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Affine + kiểm tra cơ số được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C76 — Trạm 7 → Trạm 6
-**Mặt người chơi — A:** Đổi số nhị phân 110 sang thập phân n. Đi đến D0n.
+**Mặt người chơi — A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — EAU TSX DRA NMX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: DEN TRAM <tên-số>. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **Mặt người chơi — B:**
 
 Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: CỘNG ĐỒNG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 1:** Mật thư này có ít nhất hai thao tác: lấy quy tắc hoặc khóa ở OT, rồi áp dụng cho NW. Cách dùng Lưới cột + đọc đường đi được ghi đủ dữ kiện trên phiếu.
 **Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ## 7. Bảy phiếu về A9
 
 ### R10 — Trạm 1 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · Ô VUÔNG 5×5
+
+OT — Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Lấy chữ đầu: TOA DO. Dùng bảng Polybius: 11=A, 12=B… 15=E; 21=F… 55=Z (I/J chung ô).
+
+NW — 32 11 44 22 33 45 42 44 15 51
+
+KIỂM CHỨNG — Giải tọa độ rồi đọc chuỗi theo chiều ngược lại. MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: ĐỔI MỚI.
 **Gợi ý:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### R20 — Trạm 2 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · LƯỚI CỘT
+
+OT — Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Cả đội chỉ có thể qua trạm khi cùng kiểm chứng.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Từng bước đúng quan trọng hơn một đáp án vội vàng.
+Lấy chữ đầu: DOC COT. Bản mã gồm 4 cột, phát theo thứ tự cột 2 → 4 → 1 → 3. Mỗi cột đọc từ trên xuống; X cuối chỉ là đệm.
+
+NW — ENM RTX VUA TGX
+
+KIỂM CHỨNG — Ghép lại lưới theo thứ tự 2–4–1–3, đọc từng hàng. MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: SÁNG TẠO.
 **Gợi ý:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### R30 — Trạm 3 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · MORSE + ĐẢO KHỐI
+
+OT — Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Em đừng vội tin kết quả đầu tiên vừa tìm được.
+Từ đầu dòng cho biết cách đọc: NGHE. Dấu / ngăn chữ, | ngăn khối; hãy đổi Morse, nối các khối theo thứ tự in rồi đọc ngược toàn bộ chuỗi.
+
+NW — --/.-/-/--. | -./..-/.-./- | ./...-
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: HÒA NHỊP.
 **Gợi ý:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### R40 — Trạm 4 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · HÀM AFFINE
+
+OT — Mỗi ký tự đều có lý do xuất hiện trên phiếu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Dưới lớp chữ bình thường thường còn một quy tắc khác.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Lúc còn phân vân, hãy trở về điểm bắt đầu.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Chữ đầu: MODULO. Đánh A=0…Z=25. Trên bản mã dùng C=(5P+8) mod 26; hãy tìm P, rồi đọc ngược.
+
+NW — QIZMVEPZCJ
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: TƯƠNG LAI.
 **Gợi ý:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### R50 — Trạm 5 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · ATBASH + XOAY
+
+OT — Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+Ươm một giả thuyết, rồi dùng dữ kiện để kiểm tra.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Người giữ khóa không nên tự giải một mình.
+Giữa ngã rẽ, điều nhỏ nhất đôi khi là chiếc khóa.
+“Gương chữ cái” nghĩa là A↔Z, B↔Y. Sau đó xoay tiến đúng số La Mã: VII.
+
+NW — UGNATMPNCL
+
+KIỂM CHỨNG — Đảo ngược chuỗi NW → soi gương bảng chữ → xoay tiến VII. MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: CÔNG NGHỆ.
 **Gợi ý:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### R60 — Trạm 6 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · BACON
+
+OT — Người giữ khóa không nên tự giải một mình.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Im lặng quan sát, rồi mới chọn bước tiếp theo.
+Phía trước không xa, nhưng không dành cho người hấp tấp.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Người giữ khóa không nên tự giải một mình.
+Chữ đầu nói NHI PHAN. Quy ước S=0, D=1; mỗi 5 dấu là một chữ A=00000… Z=11001.
+
+NW — DSDSD SSDSS DSSDD DSSSD DSDSS SDDSD SSDDS DSSDD SSSSS SDDSS
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: VÌ.
 **Gợi ý:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### R70 — Trạm 7 → Trung tâm
-**A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
+**A:** MẬT THƯ 3 LỚP · VIGENÈRE
+
+OT — Khi những dấu hiệu nối lại, lối đi sẽ hiện ra.
+Hãy chia vai: người nhìn, người tính, người ghi.
+Ô cửa đúng chỉ mở sau khi hai lớp đều khớp.
+Ai giữ được bình tĩnh mới nhìn ra đường đi.
+Lấy chữ đầu bốn dòng đầu làm khóa.
+
+NW — A=0…Z=25. Với khóa lặp K, giải P = C − K:
+FLHREUUTKT
+
+KIỂM CHỨNG — MÃ ĐÍCH sau cùng có dạng: VE TRUNG TAM. Đối chiếu bảng D00–D07, không suy đoán từ khoảng cách.
 **B:** Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
 **Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: CỘNG ĐỒNG.
 **Gợi ý:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
