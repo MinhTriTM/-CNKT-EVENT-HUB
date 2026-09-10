@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { permutation,schedule,scoreBoard,recommendedCycle } from '../lib/fieldmath.ts';
-import { bank,returns,finalAnswer } from '../lib/fieldkit.ts';
+import { bank,returns,finalAnswer,finalDisplay } from '../lib/fieldkit.ts';
 function* permutations(a){if(!a.length){yield [];return;}for(let i=0;i<a.length;i++)for(const p of permutations(a.filter((_,j)=>j!==i)))yield [a[i],...p];}
 const base={start:'2026-09-13T15:10',play:6,decode:2,move:10,loser:'4',attempts:[],order:[],battles:[],answers:[]};
 let count=0;
@@ -15,10 +15,11 @@ assert.equal(permutation([1,1,3,4,5,6,7]),false);
 assert.equal(bank.length,49);assert.equal(returns.length,7);assert.equal(new Set(bank.map(c=>c.id)).size,49);
 const atoms={H:1,He:2,Li:3,Be:4,B:5,C:6,N:7};const words=['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN'];
 for(const c of bank){let n;switch(c.from){case 0:n=(Number(c.route.match(/= (\d+)/)[1])-2)/3;break;case 1:n=(Number(c.route.match(/= (\d+)/)[1])-3)/2;break;case 2:n=Number(c.route.match(/Trong (\d+) giây/)[1])/2;break;case 3:n=atoms[c.route.match(/Z của (\w+)/)[1]];break;case 4:n=parseInt([...c.route.match(/Đổi ([ACGT]{2}) /)[1]].map(a=>({A:'00',C:'01',G:'10',T:'11'})[a]).join(''),2);break;case 5:n=c.route.match(/“(.+)”/)[1].split(' ').length;break;case 6:n=words.indexOf(c.route.match(/station (\w+)/)[1])+1;break;case 7:n=parseInt(c.route.match(/nhị phân ([01]+)/)[1],2);break;}assert.equal(n,c.to,c.id);}
-assert.equal([11,5,20].map(n=>String.fromCharCode(n+64)).join(''),'KET');
-assert.equal([4,1,13].map(n=>String.fromCharCode(n+64)).join(''),'DAM');
-assert.equal('OLQK'.split('').map(c=>String.fromCharCode(c.charCodeAt(0)-3)).join(''),'LINH');
-assert.equal(finalAnswer,'KET NOI DAM ME BAN LINH TIEN PHONG');
+assert.equal(bank.find(c=>c.from===1&&c.to===2).keyword,'ĐỔI MỚI');
+assert.equal(bank.find(c=>c.from===2&&c.to===3).keyword,'SÁNG TẠO');
+assert.equal(bank.find(c=>c.from===7&&c.to===1).keyword,'CỘNG ĐỒNG');
+assert.equal(finalAnswer,'DOI MOI SANG TAO HOA NHIP TUONG LAI CONG NGHE VI CONG DONG');
+assert.equal(finalDisplay,'ĐỔI MỚI SÁNG TẠO — HÒA NHỊP TƯƠNG LAI — CÔNG NGHỆ VÌ CỘNG ĐỒNG');
 const s={...base,cycle:recommendedCycle,teams:[1,2,3,4,5,6,7].map(n=>({id:String(n),name:String(n),start:n})),attempts:[]};
 for(let station=1;station<=7;station++)for(let team=1;team<=7;team++)s.attempts.push({team:String(team),station,seconds:team===2?10:team*10,dnf:team===7});
 let b=scoreBoard(s);assert.equal(b[0].points,45.5);assert.equal(b[1].points,45.5);assert.equal(b.find(t=>t.id==='3').points,35);assert.equal(b.find(t=>t.id==='7').points,0);assert.equal(b.find(t=>t.id==='7').seconds,2520);
