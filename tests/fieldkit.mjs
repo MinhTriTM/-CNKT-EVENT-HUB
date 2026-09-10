@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { permutation,schedule,scoreBoard,recommendedCycle } from '../lib/fieldmath.ts';
-import { bank,returns,finalAnswer,finalDisplay } from '../lib/fieldkit.ts';
+import { bank,returns,finalAnswer,finalDisplay,destinations } from '../lib/fieldkit.ts';
 function* permutations(a){if(!a.length){yield [];return;}for(let i=0;i<a.length;i++)for(const p of permutations(a.filter((_,j)=>j!==i)))yield [a[i],...p];}
-const base={start:'2026-09-13T15:10',play:6,decode:2,move:10,loser:'4',attempts:[],order:[],battles:[],answers:[]};
+const base={start:'2026-09-13T15:10',play:6,decode:5,move:10,loser:'4',attempts:[],order:[],battles:[],answers:[]};
 let count=0;
 for(const cycle of [recommendedCycle,[1,2,3,4,5,6,7]])for(const starts of permutations([1,2,3,4,5,6,7])){
  const s={...base,cycle,teams:starts.map((start,i)=>({id:String(i+1),name:'Đội '+(i+1),start}))};
@@ -13,8 +13,15 @@ for(const cycle of [recommendedCycle,[1,2,3,4,5,6,7]])for(const starts of permut
 }
 assert.equal(permutation([1,1,3,4,5,6,7]),false);
 assert.equal(bank.length,49);assert.equal(returns.length,7);assert.equal(new Set(bank.map(c=>c.id)).size,49);
-const atoms={H:1,He:2,Li:3,Be:4,B:5,C:6,N:7};const words=['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN'];
-for(const c of bank){let n;switch(c.from){case 0:n=(Number(c.route.match(/= (\d+)/)[1])-2)/3;break;case 1:n=(Number(c.route.match(/= (\d+)/)[1])-3)/2;break;case 2:n=Number(c.route.match(/Trong (\d+) giây/)[1])/2;break;case 3:n=atoms[c.route.match(/Z của (\w+)/)[1]];break;case 4:n=parseInt([...c.route.match(/Đổi ([ACGT]{2}) /)[1]].map(a=>({A:'00',C:'01',G:'10',T:'11'})[a]).join(''),2);break;case 5:n=c.route.match(/“(.+)”/)[1].split(' ').length;break;case 6:n=words.indexOf(c.route.match(/station (\w+)/)[1])+1;break;case 7:n=parseInt(c.route.match(/nhị phân ([01]+)/)[1],2);break;}assert.equal(n,c.to,c.id);}
+const cipherFamilies=new Set();
+for(const c of [...bank,...returns]){
+ assert.match(c.route,/MẬT THƯ 3 LỚP/,c.id);
+ assert.match(c.route,/OT —/,c.id);assert.match(c.route,/NW —/,c.id);assert.match(c.route,/KIỂM CHỨNG —/,c.id);
+ assert.match(c.hint1,/ít nhất hai thao tác/,c.id);
+ assert.equal(c.route.includes(destinations?.[c.to]?.name??'__never__'),false,c.id);
+ cipherFamilies.add(c.method);
+}
+assert.equal(cipherFamilies.size,7);
 assert.equal(bank.find(c=>c.from===1&&c.to===2).keyword,'ĐỔI MỚI');
 assert.equal(bank.find(c=>c.from===2&&c.to===3).keyword,'SÁNG TẠO');
 assert.equal(bank.find(c=>c.from===7&&c.to===1).keyword,'CỘNG ĐỒNG');
