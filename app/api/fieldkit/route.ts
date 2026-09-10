@@ -1,12 +1,12 @@
 import { z } from 'zod';
 import { operator, first, all, run, log } from '@/lib/data';
-import { bank, returns, destinations, decoder, bonusHints, ideas, finalAnswer } from '@/lib/fieldkit';
+import { bank, returns, destinations, decoder, bonusHints, ideas, finalAnswer, finalDisplay, fragmentDisplay, finalContext } from '@/lib/fieldkit';
 import { permutation, schedule, scoreBoard, type FieldState } from '@/lib/fieldmath';
 export const dynamic='force-dynamic';
 const EVENT='teambuilding-k26-2026';
 const json=(value:unknown,status=200)=>Response.json(value,{status,headers:{'Cache-Control':'no-store'}});
 const config=z.object({teams:z.array(z.object({id:z.string().min(1),name:z.string().max(100),start:z.number().int().min(1).max(7)})).length(7),cycle:z.array(z.number().int()).length(7),start:z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/),play:z.number().int().min(1).max(30),decode:z.number().int().min(0).max(30),move:z.number().int().min(1).max(60),loser:z.string().min(1)});
-export async function GET(){try{const user=await operator();if(!user||!['OWNER','ADMIN'].includes(user.role))return json({message:'Chỉ quản lý BTC được mở nội dung mật thư và điều phối.'},403);const row=await first('SELECT * FROM field_sessions WHERE event_id=?',EVENT);return json({bank,returns,destinations,decoder,bonusHints,ideas,finalText:'KẾT NỐI ĐAM MÊ — BẢN LĨNH TIÊN PHONG.',fragmentText:'Trạm 1: KẾT · 2: NỐI · 3: ĐAM · 4: MÊ · 5: BẢN · 6: LĨNH · 7: TIÊN PHONG.',teams:await all('SELECT id,name FROM teams WHERE event_id=? ORDER BY name',EVENT),state:row?JSON.parse(row.payload):null,revision:row?.revision||0});}catch(e){console.error(e);return json({message:'Chưa tải được bộ điều phối. Vui lòng thử lại.'},503);}}
+export async function GET(){try{const user=await operator();if(!user||!['OWNER','ADMIN'].includes(user.role))return json({message:'Chỉ quản lý BTC được mở nội dung mật thư và điều phối.'},403);const row=await first('SELECT * FROM field_sessions WHERE event_id=?',EVENT);return json({bank,returns,destinations,decoder,bonusHints,ideas,finalText:finalDisplay,fragmentText:fragmentDisplay,finalContext,teams:await all('SELECT id,name FROM teams WHERE event_id=? ORDER BY name',EVENT),state:row?JSON.parse(row.payload):null,revision:row?.revision||0});}catch(e){console.error(e);return json({message:'Chưa tải được bộ điều phối. Vui lòng thử lại.'},503);}}
 export async function POST(request:Request){
  try{
   if(request.headers.get('origin')&&request.headers.get('origin')!==new URL(request.url).origin)return json({message:'Yêu cầu không hợp lệ.'},403);
