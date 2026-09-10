@@ -12,8 +12,8 @@ Bản biên soạn 10/09/2026. Dành cho Ban tổ chức Khoa Công nghệ và K
 
 ## 2. Cơ chế hai lớp và lời giải cuối
 Lớp A dẫn đến địa điểm tiếp theo. Lớp B trả mảnh của TRẠM VỪA HOÀN THÀNH. Thiết kế này bảo đảm đội xuất phát ở trạm nào cũng thu đủ 7 mảnh. Phiếu xuất phát cho lời chúc KHỞI HÀNH, không tính vào câu cuối. Phiếu cuối thay lớp A thành về A9 nhưng giữ lớp B của trạm cuối.
-Câu đề xuất: **KẾT NỐI ĐAM MÊ — BẢN LĨNH TIÊN PHONG.** Đây là thông điệp dùng cho trò chơi, không khẳng định là khẩu hiệu chính thức của trường/khoa. Có 7 mảnh nhưng 8 từ: KẾT | NỐI | ĐAM | MÊ | BẢN | LĨNH | TIÊN PHONG.
-Câu khá dễ đoán khi đã có vài mảnh; chỉ tiếp nhận đáp án sau đủ 7 dấu xác nhận. Nếu thông điệp đã xuất hiện trên vé hoặc truyền thông, nên chọn câu cuối khác trước ngày tổ chức. Ngân hàng dưới đây là 7 nhóm phương pháp với tham số theo hướng đi, không phải 49 kỹ thuật khác nhau.
+Câu chuẩn BTC: **ĐỔI MỚI SÁNG TẠO — HÒA NHỊP TƯƠNG LAI — CÔNG NGHỆ VÌ CỘNG ĐỒNG.** Thông điệp của chương trình kết nối tinh thần Nghị quyết 57-NQ/TW về phát triển khoa học, công nghệ, đổi mới sáng tạo và chuyển đổi số quốc gia với vai trò đóng góp của sinh viên CN&KT cho cộng đồng. Đây là diễn giải giáo dục của chương trình, không phải khẩu hiệu hay trích dẫn chính thức của Trường, Khoa, Đảng bộ hoặc Chính phủ. Có 7 mảnh và 10 từ: Trạm 1: ĐỔI MỚI · 2: SÁNG TẠO · 3: HÒA NHỊP · 4: TƯƠNG LAI · 5: CÔNG NGHỆ · 6: VÌ · 7: CỘNG ĐỒNG.
+Bản phát cho đội không mã hóa trực tiếp từng từ. Mỗi mảnh là một dữ kiện ngữ nghĩa để đội tự gọi tên khái niệm, sau đó ghép thành ba vế. Chỉ tiếp nhận đáp án sau đủ 7 dấu xác nhận.
 Mã Cxy và Ri0 dành riêng cho BTC, vì chúng tiết lộ hướng. Bản phát người chơi dùng số phiếu theo đội/lượt. Không phát trước cả bộ 8 thẻ; phiếu B không in sẵn số thứ tự trong câu.
 
 ## 3. Địa điểm và GPS
@@ -62,7 +62,7 @@ Mã Python độc lập, không cần pandas: [scripts/xep-lich-k26.py](../scrip
 | 6 | C06 | C64, C45, C51, C12, C23, C37 | R70 |
 | 7 | C07 | C76, C64, C45, C51, C12, C23 | R30 |
 ## 5. Bảng tra phát kèm người chơi
-A1Z26: A=1 B=2 C=3 D=4 E=5 F=6 G=7 H=8 I=9 J=10 K=11 L=12 M=13 N=14 O=15 P=16 Q=17 R=18 S=19 T=20 U=21 V=22 W=23 X=24 Y=25 Z=26. Morse: N=-. O=--- I=.. . Nguyên tố: H=1 He=2 Li=3 Be=4 B=5 C=6 N=7 Al=13. Quy ước DNA của trò chơi: A=00 C=01 G=10 T=11. Tiếng Anh: ONE=1 TWO=2 THREE=3 FOUR=4 FIVE=5 SIX=6 SEVEN=7. ASCII: E=69 G=71 H=72 I=73 N=78 O=79 P=80 T=84. Caesar: bảng A–Z quay vòng. Nhị phân: các vị trí từ phải sang trái là 1, 2, 4, 8, 16, 32, 64, 128.
+Bảng này chỉ dùng cho lớp A để tìm trạm tiếp theo. Lớp B là mảnh ngữ nghĩa: đọc kỹ dữ kiện, gọi tên khái niệm phù hợp, ghi đáp án riêng của đội và giữ lại để ghép cuối. Khi ghép, ưu tiên nghĩa của cả thông điệp thay vì cố ghép theo số chữ. Những thông tin về văn bản chính sách đã được in trực tiếp trên phiếu; không cần truy cập mạng.
 Bảng địa điểm D00–D07 ở mục 3 được phát cùng. Chỉ giải theo quy ước in trên giấy; không yêu cầu thuộc lòng kiến thức chuyên ngành hoặc dùng mạng.
 
 ## 6. Toàn bộ 49 mật thư
@@ -72,506 +72,485 @@ Bảng địa điểm D00–D07 ở mục 3 được phát cùng. Chỉ giải t
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C02 — Trung tâm → Trạm 2
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 8. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C03 — Trung tâm → Trạm 3
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 11. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C04 — Trung tâm → Trạm 4
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 14. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C05 — Trung tâm → Trạm 5
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 17. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C06 — Trung tâm → Trạm 6
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 20. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C07 — Trung tâm → Trạm 7
 **Mặt người chơi — A:** Tìm số nguyên n trong 1–7: 3n + 2 = 23. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
 Đọc ngược toàn bộ chuỗi: HNAH IOHK. Đây là lời chúc xuất phát, không phải mảnh ghép cuối.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: KHOI HANH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Chuyển 2 sang vế phải, chia 3; đọc chuỗi từ phải sang trái.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: KHỞI HÀNH.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Đây là lời chúc xuất phát, không mang đáp án cuối.
 
 ### C12 — Trạm 1 → Trạm 2
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 7. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C13 — Trạm 1 → Trạm 3
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 9. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C14 — Trạm 1 → Trạm 4
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 11. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C15 — Trạm 1 → Trạm 5
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 13. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C16 — Trạm 1 → Trạm 6
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 15. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C17 — Trạm 1 → Trạm 7
 **Mặt người chơi — A:** Tìm n: 2n + 3 = 17. Đi đến D0n trong bảng địa điểm.
 **Mặt người chơi — B:**
 
-Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: KET.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Các số của mảnh ghép là 11, 5, 20.
+Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### C21 — Trạm 2 → Trạm 1
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 2 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C23 — Trạm 2 → Trạm 3
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 6 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C24 — Trạm 2 → Trạm 4
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 8 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C25 — Trạm 2 → Trạm 5
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 10 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C26 — Trạm 2 → Trạm 6
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 12 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C27 — Trạm 2 → Trạm 7
 **Mặt người chơi — A:** Một dao động có chu kỳ T = 2 giây. Trong 14 giây có bao nhiêu chu kỳ hoàn chỉnh? Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: NOI.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### C31 — Trạm 3 → Trạm 1
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của H. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C32 — Trạm 3 → Trạm 2
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của He. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C34 — Trạm 3 → Trạm 4
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của Be. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C35 — Trạm 3 → Trạm 5
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của B. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C36 — Trạm 3 → Trạm 6
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của C. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C37 — Trạm 3 → Trạm 7
 **Mặt người chơi — A:** Tìm số hiệu nguyên tử Z của N. Đặt n = Z, đi đến D0n. Dùng bảng nguyên tố được phát.
 **Mặt người chơi — B:**
 
-Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: DAM.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Be=4, H=1, Al=13.
+Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### C41 — Trạm 4 → Trạm 1
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AC thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C42 — Trạm 4 → Trạm 2
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AG thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C43 — Trạm 4 → Trạm 3
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi AT thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C45 — Trạm 4 → Trạm 5
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CC thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C46 — Trạm 4 → Trạm 6
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CG thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C47 — Trạm 4 → Trạm 7
 **Mặt người chơi — A:** Quy ước A=00, C=01, G=10, T=11. Đổi CT thành số nhị phân 4 bit rồi thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: ME.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** ATC = 001101 = 13; ACC = 000101 = 5.
+Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### C51 — Trạm 5 → Trạm 1
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C52 — Trạm 5 → Trạm 2
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C53 — Trạm 5 → Trạm 3
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C54 — Trạm 5 → Trạm 4
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C56 — Trạm 5 → Trạm 6
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC QUA THỬ”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C57 — Trạm 5 → Trạm 7
 **Mặt người chơi — A:** Đếm số từ ngăn bởi khoảng trắng trong dòng “BẠN CÙNG NHAU BƯỚC QUA THỬ THÁCH”. Gọi kết quả là n, đi đến D0n.
 **Mặt người chơi — B:**
 
-Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: BAN.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đọc B, A, N ở đầu ba dòng.
+Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### C61 — Trạm 6 → Trạm 1
 **Mặt người chơi — A:** Your next destination is station ONE. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C62 — Trạm 6 → Trạm 2
 **Mặt người chơi — A:** Your next destination is station TWO. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C63 — Trạm 6 → Trạm 3
 **Mặt người chơi — A:** Your next destination is station THREE. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C64 — Trạm 6 → Trạm 4
 **Mặt người chơi — A:** Your next destination is station FOUR. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C65 — Trạm 6 → Trạm 5
 **Mặt người chơi — A:** Your next destination is station FIVE. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C67 — Trạm 6 → Trạm 7
 **Mặt người chơi — A:** Your next destination is station SEVEN. Đổi số tiếng Anh thành n và tra D0n.
 **Mặt người chơi — B:**
 
-Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: LINH.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D07 — Sân bóng rổ, gần B4 (10.421665, 105.642891). Mảnh giữ lại: VÌ.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### C71 — Trạm 7 → Trạm 1
 **Mặt người chơi — A:** Đổi số nhị phân 001 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D01 — Sân đá banh (10.420777, 105.644399). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C72 — Trạm 7 → Trạm 2
 **Mặt người chơi — A:** Đổi số nhị phân 010 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D02 — Khu T (10.419337, 105.645022). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C73 — Trạm 7 → Trạm 3
 **Mặt người chơi — A:** Đổi số nhị phân 011 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D03 — Trước tòa H2 (10.419688, 105.644049). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C74 — Trạm 7 → Trạm 4
 **Mặt người chơi — A:** Đổi số nhị phân 100 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D04 — Hồ bơi (10.422329, 105.640870). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C75 — Trạm 7 → Trạm 5
 **Mặt người chơi — A:** Đổi số nhị phân 101 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D05 — Đường chạy C1 (10.421667, 105.641517). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ### C76 — Trạm 7 → Trạm 6
 **Mặt người chơi — A:** Đổi số nhị phân 110 sang thập phân n. Đi đến D0n.
 **Mặt người chơi — B:**
 
-Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Tra đúng bảng quy ước được phát.
-**Gợi ý 2:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D06 — Sân C2, giữa C1–C2 (10.422046, 105.641630). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý 1:** Giải riêng phần địa điểm và phần mảnh ghép. Đọc lớp B như một gợi nghĩa; không có chuỗi ký tự để giải mã trực tiếp.
+**Gợi ý 2:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ## 7. Bảy phiếu về A9
 
 ### R10 — Trạm 1 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Tính theo thứ tự: (3² + 2), √25, (4 × 5). Đổi số thành chữ với A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: KET.
-**Gợi ý:** Các số của mảnh ghép là 11, 5, 20.
+**B:** Phiếu nguồn: 57-NQ/TW · Bộ Chính trị · 22/12/2024. Hãy gọi tên hành động làm cái đang có trở nên tốt hơn, khác hơn và hiệu quả hơn. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: ĐỔI MỚI.
+**Gợi ý:** Xem 57-NQ/TW như dữ kiện gợi nghĩa, không cần nhớ nguyên văn tiêu đề.
 
 ### R20 — Trạm 2 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Dùng bảng Morse: -. / --- / .. . Dấu / phân cách chữ cái.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: NOI.
-**Gợi ý:** Số chu kỳ = thời gian / chu kỳ. Morse lần lượt là N, O, I.
+**B:** Một bản phác thảo chỉ thật sự có ý nghĩa khi biến thành cách làm hoặc giá trị chưa từng có. Hãy gọi tên năng lực tạo ra điều mới ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: SÁNG TẠO.
+**Gợi ý:** Tìm tên của năng lực biến ý tưởng thành giá trị mới.
 
 ### R30 — Trạm 3 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Lấy số hiệu nguyên tử Z của Be, H, Al rồi đổi A=1, …, Z=26.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: DAM.
-**Gợi ý:** Be=4, H=1, Al=13.
+**B:** Trong dàn nhạc, nhiều nhạc cụ không mất bản sắc nhưng cùng một nhịp để tạo thành giai điệu. Gọi tên trạng thái phối hợp ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: HÒA NHỊP.
+**Gợi ý:** Tìm một trạng thái nhiều người cùng chung nhịp, không phải “đoàn kết”.
 
 ### R40 — Trạm 4 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Quy ước riêng của trò chơi: A=00, C=01, G=10, T=11. Giải ATC / ACC thành hai số nhị phân, đổi sang thập phân rồi A1Z26. Không dùng mã di truyền hay nguyên tắc bổ sung DNA.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: ME.
-**Gợi ý:** ATC = 001101 = 13; ACC = 000101 = 5.
+**B:** Câu hỏi của trạm không hỏi “hôm qua ta đã làm gì?”, mà hỏi “ngày mai ta muốn đến đâu?”. Hãy gọi tên hướng nhìn về phía trước. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: TƯƠNG LAI.
+**Gợi ý:** Tìm một cụm hai tiếng chỉ hướng nhìn về phía ngày mai.
 
 ### R50 — Trạm 5 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Đọc chữ đầu từng dòng, giữ nguyên thứ tự:
-Bền lòng vượt hết chông gai.
-Ai cùng chung sức, đường dài hóa gần.
-Nắm tay viết tiếp mùa xuân.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: BAN.
-**Gợi ý:** Đọc B, A, N ở đầu ba dòng.
+**B:** Từ bản vẽ, dữ liệu, mã nguồn và quy trình, con người tạo ra công cụ giải quyết vấn đề. Gọi tên lĩnh vực biến tri thức thành giải pháp. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: CÔNG NGHỆ.
+**Gợi ý:** Tìm lĩnh vực đưa tri thức vào công cụ và giải pháp.
 
 ### R60 — Trạm 6 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Three steps back reveal the word. Giải OLQK bằng bảng chữ cái A–Z, quay vòng khi cần.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: LINH.
-**Gợi ý:** Lùi từng chữ 3 vị trí: O→L, L→I, Q→N, K→H.
+**B:** Mọi giải pháp kỹ thuật cần trả lời: “làm điều này ___ ai, ___ mục đích gì?”. Ghi đúng từ nối biểu đạt động cơ phụng sự, chỉ một tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: VÌ.
+**Gợi ý:** Câu trả lời chỉ có một tiếng, là từ nối chỉ mục đích / động cơ.
 
 ### R70 — Trạm 7 → Trung tâm
 **A:** Đã thu đủ bảy dấu trạm: trở về sân có ký hiệu A(3²), nơi cả đội đã khởi hành. Tra D00 trên bảng địa điểm.
-**B:** Giải ASCII 8 bit: 01010100 01001001 01000101 01001110 / 01010000 01001000 01001111 01001110 01000111. Dấu / phân cách từ.
-**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: TIEN PHONG.
-**Gợi ý:** Đổi từng nhóm 8 bit sang mã ASCII; dấu / là khoảng trắng.
+**B:** Giá trị của giải pháp không dừng ở một cá nhân hay một đội; nó lan tới tập thể cùng sống, học tập và phát triển. Gọi tên chủ thể ấy. Ghi một cụm gồm hai tiếng.
+**Lời giải BTC:** Địa điểm: D00 — Sân A9 (10.419312, 105.644340). Mảnh giữ lại: CỘNG ĐỒNG.
+**Gợi ý:** Câu trả lời chỉ tập thể rộng hơn cá nhân và một nhóm chơi.
 
 ## 8. Minigame trung tâm và khiêu chiến
 Hình phạt mở màn: tạo dáng chung hoặc hô một câu đồng đội trong 45–60 giây; cho phép phương án thay thế. Không phạt bằng vận động nguy hiểm hay xuống nước. Trạm hồ bơi mặc định tổ chức tìm bi trong chậu tại khu khô được phép, không mặc định sinh viên phải vào hồ.
@@ -587,13 +566,13 @@ Sau khi bảy đội quay lại và có đủ dấu, mở lượt giải chung 3
 Mỗi đội nhận gợi ý theo số thắng của chính đội đó. Chuẩn bị nhiều bản mỗi gợi ý; không chỉ in tổng cộng 7 tờ. Việc nhận lại trận không được tạo thưởng lần hai. Không tự thêm giới hạn số lần phòng thủ vì trái yêu cầu đã nêu.
 
 ### Gợi ý tăng dần
-1. Đáp án là một thông điệp đồng đội được sáng tác cho chương trình, không phải địa danh.
-2. Thông điệp gồm hai vế, mỗi vế bốn từ.
-3. Vế đầu nói về sự gắn kết cùng niềm yêu thích.
-4. Vế sau nói về phẩm chất và tinh thần đi đầu.
-5. Hai từ cuối là TIÊN PHONG.
-6. Vế đầu mở bằng KẾT NỐI; vế sau mở bằng BẢN LĨNH.
-7. KẾT NỐI ĐAM MÊ — BẢN LĨNH TIÊN PHONG.
+1. Đáp án là thông điệp định hướng của chương trình, không phải địa danh hay khẩu hiệu chính thức.
+2. Bảy trạm tạo thành ba vế: khát vọng tạo điều mới; cách đi cùng thời đại; giá trị dành cho mọi người.
+3. Mảnh 1 neo vào văn bản 57-NQ/TW; mảnh 2 là năng lực biến ý tưởng thành giá trị.
+4. Mảnh 3–4 nói về cùng nhịp và nhìn về phía trước.
+5. Mảnh 5–7 nói về công cụ, động cơ phục vụ và đối tượng thụ hưởng.
+6. Đặt các khái niệm theo thứ tự trạm 1 → 7, rồi thêm dấu ngắt hợp lý thành ba vế.
+7. Đối chiếu từng khái niệm với hành động, năng lực, trạng thái, tầm nhìn, lĩnh vực, động cơ và chủ thể ở bảy phiếu.
 
 ## 9. Điểm và phân hạng
 Mỗi trạm đo thời gian từ hiệu lệnh bắt đầu đến khi đạt tiêu chí hoàn thành đã công bố. Không cộng thời gian di chuyển, chờ, giải mật thư, hoặc hình phạt trung tâm. Cùng điều kiện dụng cụ, cùng số người tham gia và cùng trọng tài/quy trình đo.
