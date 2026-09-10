@@ -1,0 +1,88 @@
+Created /workspace/sites/cnkt-event-hub/public/mat-thu-in-a4-a5.html with 56 printable cipher cards.
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { bank, returns } from "../lib/fieldkit.ts";
+
+const output = resolve("public/mat-thu-in-a4-a5.html");
+const cards = [...bank, ...returns].map((card) => ({
+  id: card.id,
+  from: card.from,
+  to: card.to,
+  route: card.route,
+  fragment: card.fragment,
+}));
+const data = JSON.stringify(cards).replace(/</g, "\\u003c");
+
+const html = [
+  "<!doctype html>",
+  '<html lang="vi">',
+  "<head>",
+  '<meta charset="utf-8">',
+  '<meta name="viewport" content="width=device-width, initial-scale=1">',
+  "<title>Mật thư TeamBuilding K26 · Bản in A4/A5</title>",
+  "<style id=\"paper-style\">@page { size: A4 portrait; margin: 10mm; }</style>",
+  "<style>",
+  ":root { color-scheme: light; --navy:#0b2b55; --blue:#0b78da; --ink:#13233a; --muted:#5d6b7e; --line:#bfd0e4; --paper:#fff; --soft:#edf6ff; --orange:#f79c1e; }",
+  "* { box-sizing:border-box; } body { margin:0; color:var(--ink); background:#e7edf5; font-family:Arial, Helvetica, sans-serif; }",
+  ".toolbar { max-width:980px; margin:24px auto; padding:20px; border-radius:16px; background:#fff; box-shadow:0 8px 32px rgba(11,43,85,.12); }",
+  ".toolbar h1 { margin:0 0 6px; color:var(--navy); font-size:22px; } .toolbar p { margin:0 0 16px; color:var(--muted); line-height:1.45; }",
+  ".controls { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; align-items:end; } .control { display:grid; gap:6px; font-size:13px; font-weight:700; color:var(--navy); }",
+  "select, button { min-height:40px; border:1px solid var(--line); border-radius:9px; padding:0 10px; color:var(--ink); background:#fff; font:inherit; } button { border:0; background:var(--blue); color:#fff; font-weight:800; cursor:pointer; }",
+  ".print-note { margin:14px 0 0; padding:11px 12px; border-left:4px solid var(--orange); background:#fff8eb; color:#5e430d; font-size:13px; line-height:1.45; }",
+  ".counter { margin:12px 0 0; color:var(--muted); font-size:13px; } #pages { margin:0 auto 28px; width:max-content; max-width:100%; }",
+  ".print-sheet { position:relative; width:190mm; min-height:277mm; margin:0 auto 10px; padding:0; background:var(--paper); box-shadow:0 2px 16px rgba(11,43,85,.13); break-after:page; page-break-after:always; }",
+  ".sheet-inner { min-height:277mm; padding:13mm; border:1.2mm solid var(--navy); outline:1px solid #fff; outline-offset:-5mm; display:flex; flex-direction:column; }",
+  ".card-kicker { color:var(--blue); font-size:10pt; letter-spacing:1.5px; font-weight:800; text-transform:uppercase; } .card-id { margin-left:auto; color:var(--muted); font-size:9pt; font-weight:700; }",
+  ".card-top { display:flex; gap:10px; align-items:center; border-bottom:2px solid var(--navy); padding-bottom:7mm; } .card-title { margin:8mm 0 4mm; color:var(--navy); font-size:28pt; line-height:1.06; }",
+  ".card-subtitle { margin:0; color:var(--muted); font-size:12pt; line-height:1.45; } .seal { display:grid; place-items:center; width:34mm; height:34mm; border:2px solid var(--blue); border-radius:50%; color:var(--blue); font-size:10pt; font-weight:800; text-align:center; }",
+  ".content-box { margin:12mm 0; padding:9mm; border:1px solid var(--line); border-radius:4mm; background:var(--soft); } .label { color:var(--blue); font-size:10pt; font-weight:800; text-transform:uppercase; letter-spacing:.8px; }",
+  ".cipher { margin:4mm 0 0; color:#061b36; font-family:Georgia, 'Times New Roman', serif; font-size:19pt; line-height:1.5; font-weight:700; } .answer-line { margin-top:auto; padding-top:8mm; border-top:1px dashed #7992ae; }",
+  ".answer-line p { margin:0 0 3mm; font-size:11pt; font-weight:700; } .blank { height:12mm; border-bottom:2px solid var(--navy); } .foot { margin-top:8mm; color:var(--muted); font-size:9pt; line-height:1.45; }",
+  ".back .sheet-inner { border-color:#116b4a; } .back .card-kicker, .back .label { color:#116b4a; } .back .card-title { color:#0c5d40; } .back .seal { color:#116b4a; border-color:#116b4a; } .back .content-box { background:#effaf4; }",
+  ".back .cipher { font-size:17pt; line-height:1.65; font-weight:700; } .back .blank { border-color:#0c5d40; }",
+  ".reference .sheet-inner { border-color:#6e4a0b; } .reference h2 { margin:9mm 0 3mm; color:#6e4a0b; font-size:24pt; } .reference table { width:100%; border-collapse:collapse; margin-top:7mm; font-size:12pt; } .reference th, .reference td { padding:4.5mm; border:1px solid var(--line); text-align:left; vertical-align:top; } .reference th { color:#fff; background:#6e4a0b; } .reference .code { color:#6e4a0b; font-weight:800; white-space:nowrap; }",
+  ".single-sheet .front-block { min-height:128mm; } .single-sheet .back-block { min-height:108mm; padding-top:8mm; border-top:2px dashed #9db2c7; } .single-sheet .cipher { font-size:14pt; line-height:1.45; } .single-sheet .card-title { margin:4mm 0 2mm; font-size:19pt; } .single-sheet .content-box { margin:5mm 0; padding:5mm; } .single-sheet .answer-line { padding-top:4mm; }",
+  "body.a5 .print-sheet { width:138mm; min-height:190mm; } body.a5 .sheet-inner { min-height:190mm; padding:9mm; } body.a5 .card-title { font-size:20pt; } body.a5 .seal { width:26mm; height:26mm; font-size:8pt; } body.a5 .cipher { font-size:14pt; } body.a5 .back .cipher { font-size:12pt; line-height:1.5; }",
+  "body.a5 .single-sheet .front-block { min-height:82mm; } body.a5 .single-sheet .back-block { min-height:74mm; padding-top:5mm; } body.a5 .single-sheet .cipher { font-size:10.8pt; line-height:1.35; } body.a5 .single-sheet .card-title { font-size:15pt; } body.a5 .single-sheet .content-box { margin:3mm 0; padding:3.5mm; } body.a5 .single-sheet .foot { font-size:7.6pt; }",
+  "body.a5 .reference h2 { margin:5mm 0 2mm; font-size:17pt; } body.a5 .reference table { margin-top:3mm; font-size:8.5pt; } body.a5 .reference th, body.a5 .reference td { padding:2.2mm; }",
+  "@media (max-width:760px) { .toolbar { margin:0; border-radius:0; } .controls { grid-template-columns:1fr 1fr; } .print-sheet { transform-origin:top center; } }",
+  "@media print { body { background:#fff; } .toolbar { display:none !important; } #pages { margin:0; width:auto; max-width:none; } .print-sheet { margin:0; box-shadow:none; } .print-sheet:last-child { break-after:auto; page-break-after:auto; } }",
+  "</style>",
+  "</head>",
+  "<body>",
+  '<section class="toolbar">',
+  "<h1>Mật thư TeamBuilding K26 · bản in BTC</h1>",
+  "<p>Chọn tuyến cần phát, khổ giấy và kiểu in. Bản in không hiển thị đáp án cuối.</p>",
+  '<div class="controls">',
+  '<label class="control">Tuyến xuất phát <select id="from"></select></label>',
+  '<label class="control">Điểm đến <select id="to"></select></label>',
+  '<label class="control">Khổ giấy <select id="paper"><option value="A4">A4</option><option value="A5">A5</option></select></label>',
+  '<label class="control">Cách in <select id="mode"><option value="single">1 mặt · cả 2 phần trên một tờ</option><option value="double">2 mặt · trước/sau từng mật thư</option></select></label>',
+  "<button id=\"print\">In mật thư</button>",
+  "</div>",
+  '<div class="counter" id="counter"></div>',
+  '<div class="print-note" id="note"></div>',
+  "</section>",
+  '<main id="pages"></main>',
+  "<script>",
+  "const CARDS = " + data + ";",
+  "const station = { 0:'Trạm Trung Tâm', 1:'Trạm 1 · Vượt đầm lầy', 2:'Trạm 2 · Ra-đa dẫn đường', 3:'Trạm 3 · Tháp ly tốc độ', 4:'Trạm 4 · Tìm bi trong hồ', 5:'Trạm 5 · Bảo vệ bong bóng', 6:'Trạm 6 · Chuyền vòng', 7:'Trạm 7 · Truy tìm kho báu' };",
+  "const locations = [{ code:'D00', name:'Trạm Trung Tâm · Sân A9', point:'10.419312, 105.644340' }, { code:'D01', name:'Trạm 1 · Sân đá banh', point:'10.420777, 105.644399' }, { code:'D02', name:'Trạm 2 · Khu T', point:'10.419337, 105.645022' }, { code:'D03', name:'Trạm 3 · Trước tòa H2', point:'10.419688, 105.644049' }, { code:'D04', name:'Trạm 4 · Hồ bơi', point:'10.422329, 105.640870' }, { code:'D05', name:'Trạm 5 · Đường chạy C1', point:'10.421667, 105.641517' }, { code:'D06', name:'Trạm 6 · Sân C2 (giữa C1–C2)', point:'10.422046, 105.641630' }, { code:'D07', name:'Trạm 7 · Sân bóng rổ (gần B4)', point:'10.421665, 105.642891' }];",
+  "const $ = (id) => document.getElementById(id);",
+  "const escapeHtml = (value) => String(value).replace(/[&<>\\\"]/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '\\\"':'&quot;' })[char]);",
+  "function options(select, first) { select.innerHTML = '<option value=\\\"all\\\">' + first + '</option>' + Object.keys(station).map((n) => '<option value=\\\"' + n + '\\\">' + station[n] + '</option>').join(''); }",
+  "function front(card, compact) { return '<section class=\\\"front-block\\\"><div class=\\\"card-top\\\"><span class=\\\"card-kicker\\\">TeamBuilding K26 · CN&KT DThU</span><span class=\\\"card-id\\\">' + escapeHtml(card.id) + '</span></div><h2 class=\\\"card-title\\\">A · Giải điểm đến</h2><p class=\\\"card-subtitle\\\">Giải mật mã dưới đây để tìm trạm tiếp theo. Giữ phiếu kín với đội khác.</p><div class=\\\"content-box\\\"><div class=\\\"label\\\">Mật mã định tuyến</div><p class=\\\"cipher\\\">' + escapeHtml(card.route) + '</p></div><div class=\\\"answer-line\\\"><p>Điểm đến đội bạn tìm được:</p><div class=\\\"blank\\\"></div></div><p class=\\\"foot\\\">Nộp hoặc mang phiếu này theo hướng dẫn của quản trò. Không ghi đáp án chung của chương trình lên phiếu.</p></section>'; }",
+  "function back(card) { return '<section class=\\\"back-block\\\"><div class=\\\"card-top\\\"><span class=\\\"card-kicker\\\">TeamBuilding K26 · CN&KT DThU</span><span class=\\\"card-id\\\">' + escapeHtml(card.id) + ' · Mặt B</span></div><h2 class=\\\"card-title\\\">B · Mảnh mang về</h2><p class=\\\"card-subtitle\\\">Đọc kỹ gợi ý, ghi lại cụm từ suy luận được và giữ đến lúc tập hợp ở Trạm Trung Tâm.</p><div class=\\\"content-box\\\"><div class=\\\"label\\\">Gợi ý ngữ nghĩa</div><p class=\\\"cipher\\\">' + escapeHtml(card.fragment) + '</p></div><div class=\\\"answer-line\\\"><p>Mảnh ghép đội bạn suy luận:</p><div class=\\\"blank\\\"></div></div><p class=\\\"foot\\\">Không có đáp án trực tiếp trên phiếu. Ghép các mảnh sau khi hoàn thành đủ thử thách.</p></section>'; }",
+  "function page(card, side, index) { const klass = side === 'back' ? 'back' : 'front'; return '<article class=\\\"print-sheet ' + klass + '\\\" data-number=\\\"' + (index + 1) + '\\\"><div class=\\\"sheet-inner\\\">' + (side === 'back' ? back(card) : front(card)) + '</div></article>'; }",
+  "function single(card, index) { return '<article class=\\\"print-sheet single-sheet\\\" data-number=\\\"' + (index + 1) + '\\\"><div class=\\\"sheet-inner\\\">' + front(card, true) + back(card) + '</div></article>'; }",
+  "function referencePage() { return '<article class=\\\"print-sheet reference\\\"><div class=\\\"sheet-inner\\\"><div class=\\\"card-top\\\"><span class=\\\"card-kicker\\\">TeamBuilding K26 · CN&KT DThU</span><span class=\\\"card-id\\\">BẢNG TRA</span></div><h2>Bảng địa điểm định tuyến</h2><p class=\\\"card-subtitle\\\">Giải ra mã D00–D07, sau đó đối chiếu bảng này để di chuyển. Phát kèm hoặc treo tại Trạm Trung Tâm.</p><table><thead><tr><th>Mã</th><th>Điểm đến</th><th>Tọa độ</th></tr></thead><tbody>' + locations.map((place) => '<tr><td class=\\\"code\\\">' + place.code + '</td><td>' + place.name + '</td><td>' + place.point + '</td></tr>').join('') + '</tbody></table><p class=\\\"foot\\\">Bảng này chỉ dùng để xác định vị trí; không chứa mảnh ghép đáp án cuối.</p></div></article>'; }",
+  "function render() { const from = $('from').value; const to = $('to').value; const mode = $('mode').value; const paper = $('paper').value; const selected = CARDS.filter((card) => (from === 'all' || String(card.from) === from) && (to === 'all' || String(card.to) === to)); document.body.classList.toggle('a5', paper === 'A5'); $('paper-style').textContent = '@page { size: ' + paper + ' portrait; margin: 10mm; }'; $('pages').innerHTML = referencePage() + selected.map((card, index) => mode === 'double' ? page(card, 'front', index) + page(card, 'back', index) : single(card, index)).join(''); $('counter').textContent = selected.length + ' mật thư được chọn · ' + (1 + (mode === 'double' ? selected.length * 2 : selected.length)) + ' trang in (đã gồm 1 bảng tra địa điểm).'; $('note').textContent = mode === 'double' ? 'In hai mặt: chọn “lật cạnh dài”. Hệ thống in trước 1 bảng tra địa điểm, rồi sắp từng cặp liên tiếp: mặt trước, mặt sau của cùng một mật thư.' : 'In một mặt: mỗi tờ chứa phần A (điểm đến) và phần B (mảnh mang về). Cắt hoặc gấp theo đường phân cách nếu cần.'; }",
+  "options($('from'), 'Tất cả tuyến · 56 mật thư'); options($('to'), 'Mọi điểm đến'); ['from','to','mode','paper'].forEach((id) => $(id).addEventListener('change', render)); $('print').addEventListener('click', () => window.print()); render();",
+  "</script>",
+  "</body>",
+  "</html>",
+].join("\n");
+
+mkdirSync(dirname(output), { recursive: true });
+writeFileSync(output, html, "utf8");
+console.log("Created " + output + " with " + cards.length + " printable cipher cards.");
